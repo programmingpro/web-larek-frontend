@@ -9,13 +9,18 @@ class ProductItem implements IProductItem {
 	category: string;
 	price: number | string;
 
-	constructor(product: IProductItem) {
-		this.id = product.id;
-		this.description = product.description;
-		this.image = product.image;
-		this.title = product.title;
-		this.category = product.category;
-		this.price = product.price;
+	constructor(id: string,
+							description: string,
+							image: string,
+							title: string,
+							category: string,
+							price: number | string) {
+		this.id = id;
+		this.description = description;
+		this.image = image;
+		this.title = title;
+		this.category = category;
+		this.price = price;
 	}
 }
 

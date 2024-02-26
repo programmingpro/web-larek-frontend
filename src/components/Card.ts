@@ -24,7 +24,3 @@ export class Card<T> extends Component<ICard<T>> {
 	protected _category: HTMLButtonElement;
 	protected _price: HTMLButtonElement;
 }
-
-export class CardShow<T> extends Card<T> {
-
-}
