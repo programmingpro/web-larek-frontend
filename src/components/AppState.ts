@@ -1,37 +1,60 @@
-import { IAppState, IProductItem, IOrder, IBasket, PaymentType, FormErrors } from '../types';
+import { IAppState, IProductItem, IOrder, IBasket, PaymentType } from '../types';
 import {Model} from './base/Model';
 
-class ProductItem implements IProductItem {
-	id: string;
-	description: string;
-	image: string;
-	title: string;
-	category: string;
-	price: number | string;
-
-	constructor(id: string,
-							description: string,
-							image: string,
-							title: string,
-							category: string,
-							price: number | string) {
-		this.id = id;
-		this.description = description;
-		this.image = image;
-		this.title = title;
-		this.category = category;
-		this.price = price;
-	}
-}
 
 export class AppState extends Model<IAppState> {
-	basket: [];
-	products: [];
-	order: IOrder = {
+	private _basket: string[] = [];
+	private _products: IProductItem[];
+	private _order: IOrder = {
 		phone: '',
+		address: '',
 		email: '',
-		paymentType: PaymentType.Online,
+		payment: PaymentType.Online,
 		items: [],
+		total: 0
 	};
-	formErrors: FormErrors = {};
+
+
+	get basket(): string[] {
+		return this._basket;
+	}
+
+	set basket(value: string[]) {
+		this._basket = value;
+	}
+
+	get products(): IProductItem[] {
+		return this._products;
+	}
+
+	set products(value: IProductItem[]) {
+		this._products = value;
+	}
+
+	get order(): IOrder {
+		return this._order;
+	}
+
+	set order(value: IOrder) {
+		this._order = value;
+	}
+
+	setProducts(products: IProductItem[]) {
+		this.products = products
+		this.emitChanges('cards:display', { catalog: this._products });
+	}
+
+	getAddedProducts(): IProductItem[] {
+		return this._products
+			.filter(item => this.basket.includes(item.id));
+	}
+
+	getTotal(): number {
+		const arrayOfItems = this.products.filter(item => this.basket.includes(item.id))
+		return arrayOfItems.reduce((sum: number, item: IProductItem) => sum + (item.price), 0);
+	}
+
+	getCountOfItems(): number {
+		return this.basket.length
+	}
 }

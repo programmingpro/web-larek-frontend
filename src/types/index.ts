@@ -1,11 +1,10 @@
-
 export interface IProductItem {
 	id: string;
 	description: string;
 	image: string;
 	title: string;
 	category: string;
-	price: number | string;
+	price: number;
 }
 
 export interface IBasket {
@@ -24,8 +23,20 @@ export enum PaymentType {
 export interface IOrder {
 	phone: string,
 	email: string,
+	address: string,
+	payment: PaymentType,
+	items: string[],
+	total: number
+}
+
+export interface IPaymentAndAddressForm {
+	address: string,
 	paymentType: PaymentType,
-	items: IProductItem[],
+}
+
+export interface IPaymentPhoneAndEmail {
+	phone: string,
+	email: string,
 }
 
 
@@ -50,21 +61,9 @@ export interface IAppState {
 	products: IProductItem[];
 	basket: string[];
 	order: IOrder | null;
-	formErrors: FormErrors[];
 }
 
 export interface IOrderStatus { // отвечает за успешность заказа
 	status: string;
 	totalPrice: number;
-}
-
-export type FormErrors = Partial<Record<keyof IOrder, string>>;
-
-interface IModal {
-	content: HTMLElement;
-}
-
-
-interface IModalData {
-	content: HTMLElement;
 }

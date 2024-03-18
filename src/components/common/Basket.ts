@@ -1,5 +1,5 @@
 import {Component} from "../base/Component";
-import {cloneTemplate, createElement, ensureElement, formatNumber} from "../../utils/utils";
+import {createElement, ensureElement, formatNumber} from "../../utils/utils";
 import {EventEmitter} from "../base/events";
 
 interface IBasketView {
@@ -16,14 +16,12 @@ export class Basket extends Component<IBasketView> {
         super(container);
 
         this._list = ensureElement<HTMLElement>('.basket__list', this.container);
-        this._total = this.container.querySelector('.basket__total');
-        this._button = this.container.querySelector('.basket__action');
+        this._total = this.container.querySelector('.basket__price');
+        this._button = this.container.querySelector('.basket__button');
 
-        if (this._button) {
-            this._button.addEventListener('click', () => {
-                events.emit('order:open');
-            });
-        }
+        this._button.addEventListener('click', () => {
+            events.emit('order:open');
+        });
 
         this.items = [];
     }
@@ -39,6 +37,14 @@ export class Basket extends Component<IBasketView> {
     }
 
     set total(total: number) {
-        this.setText(this._total, formatNumber(total));
+        this.setText(this._total, formatNumber(total) + ' синапсов');
+    }
+
+    setButtonDisabled(state: boolean) {
+        if (state) {
+            this.setDisabled(this._button, true)
+        } else {
+            this.setDisabled(this._button, false)
+        }
     }
 }

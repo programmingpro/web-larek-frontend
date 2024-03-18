@@ -15,6 +15,7 @@ export abstract class Model<T> {
 
 	// Сообщить всем что модель поменялась
 	emitChanges(event: string, payload?: object) {
+		debugger;
 		// Состав данных можно модифицировать
 		this.events.emit(event, payload ?? {});
 	}
