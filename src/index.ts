@@ -173,14 +173,15 @@ events.on('order:submit', (data: IPaymentPhoneAndEmail) => {
 	appData.order.phone = data.phone;
 	appData.order.total = appData.getTotal();
 	api.placeOrder(appData.order).then( (res: IOrderStatus) => {
+
+		appData.basket = [];
+		appData.order.items = []
+		console.log(appData)
+		page.counter = 0
+
 		const success = new Success(cloneTemplate(successTemplate), {
 			onClick: () => {
 				modal.close();
-				appData.basket = [];
-				appData.order.total = 0
-				appData.order.items = []
-				console.log(appData)
-				page.counter = 0
 				events.emit('cards:display')
 			}
 		});
@@ -190,5 +191,7 @@ events.on('order:submit', (data: IPaymentPhoneAndEmail) => {
 				total: appData.order.total
 			})
 		});
+
+		appData.order.total = 0
 	});
 })
